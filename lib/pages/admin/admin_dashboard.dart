@@ -6,95 +6,56 @@ class AdminDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Admin Dashboard'),
-          automaticallyImplyLeading: false,
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Active Rides'),
-              Tab(text: 'Analytics'),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Admin Dashboard')),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Overview',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildStatCard(
+                              'Active Rides',
+                              '12',
+                              Icons.directions_car,
+                              Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: _buildStatCard(
+                              'Total Users',
+                              '156',
+                              Icons.people,
+                              Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        body: TabBarView(
-          children: [_buildRidesList(context), _buildAnalytics()],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRidesList(BuildContext context) {
-    // TODO: Fetch rides from Firestore
-    final rides = [
-      {
-        'id': '1',
-        'traveler': 'Sarah Wilson',
-        'status': 'Active',
-        'from': 'Airport',
-        'to': 'Downtown',
-      },
-      {
-        'id': '2',
-        'traveler': 'Mike Johnson',
-        'status': 'Completed',
-        'from': 'Mall',
-        'to': 'Residence',
-      },
-    ];
-
-    return ListView.builder(
-      itemCount: rides.length,
-      itemBuilder: (context, index) {
-        final ride = rides[index];
-        return Card(
-          margin: const EdgeInsets.all(8.0),
-          child: ListTile(
-            title: Text(ride['traveler']!),
-            subtitle: Text('${ride['from']} → ${ride['to']}'),
-            trailing: Chip(
-              label: Text(ride['status']!),
-              backgroundColor: ride['status'] == 'Active'
-                  ? Colors.green[100]
-                  : Colors.grey[300],
-            ),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                Routes.rideDetail,
-                arguments: ride['id'],
-              );
-            },
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildAnalytics() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Summary',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          _buildStatCard(
-            'Total Rides',
-            '1,234',
-            Icons.directions_car,
-            Colors.blue,
-          ),
-          const SizedBox(height: 8),
-          _buildStatCard('Active Users', '456', Icons.people, Colors.green),
-          const SizedBox(height: 8),
-          _buildStatCard('Average Rating', '4.8', Icons.star, Colors.amber),
-        ],
       ),
     );
   }
@@ -107,30 +68,21 @@ class AdminDashboard extends StatelessWidget {
   ) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, size: 40, color: color),
-            const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  value,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            Icon(icon, color: color),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
             ),
+            Text(title, style: const TextStyle(color: Colors.grey)),
           ],
         ),
       ),

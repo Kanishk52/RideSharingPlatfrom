@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:ride_tracking_platform/main.dart';
-import '../../services/auth_service.dart';
-import '../../constants/routes.dart';
 import '../../domain/usecases/auth_usecases.dart';
+import '../../constants/routes.dart';
+import '../../main.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -19,23 +18,13 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
 
   @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final signInUseCase = context
+    final signUpUseCase = context
         .findAncestorWidgetOfExactType<MyApp>()
-        ?.signInUseCase;
+        ?.signUpUseCase;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome Back'),
-        automaticallyImplyLeading: false,
-      ),
+      appBar: AppBar(title: const Text('Create Account')),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -55,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Sign in to your account',
+                              'Sign up',
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
@@ -99,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                               obscureText: _obscurePassword,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter your password';
+                                  return 'Please enter a password';
                                 }
                                 if (value.length < 6) {
                                   return 'Password must be at least 6 characters';
@@ -108,62 +97,61 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             const SizedBox(height: 24),
-                            _isLoading
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : SizedBox(
-                                    width: double.infinity,
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        if (_formKey.currentState!.validate()) {
-                                          setState(() => _isLoading = true);
-                                          try {
-                                            await signInUseCase?.call(
-                                              _emailController.text,
-                                              _passwordController.text,
-                                            );
-                                            if (mounted) {
-                                              Navigator.pushReplacementNamed(
-                                                context,
-                                                Routes.roleSelection,
-                                              );
-                                            }
-                                          } catch (e) {
-                                            if (mounted) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(e.toString()),
-                                                ),
-                                              );
-                                            }
-                                          } finally {
-                                            if (mounted) {
-                                              setState(
-                                                () => _isLoading = false,
-                                              );
-                                            }
-                                          }
-                                        }
-                                      },
-                                      child: const Text('Login'),
-                                    ),
-                                  ),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    setState(() => _isLoading = true);
+                                    try {
+                                      await signUpUseCase?.call(
+                                        _emailController.text,
+                                        _passwordController.text,
+                                      );
+                                      if (mounted) {
+                                        Navigator.pushReplacementNamed(
+                                          context,
+                                          Routes.roleSelection,
+                                        );
+                                      }
+                                    } catch (e) {
+                                      if (mounted) {
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(content: Text(e.toString())),
+                                        );
+                                      }
+                                    } finally {
+                                      if (mounted) {
+                                        setState(() => _isLoading = false);
+                                      }
+                                    }
+                                  }
+                                },
+                                child: _isLoading
+                                    ? const CircularProgressIndicator(
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              Colors.white,
+                                            ),
+                                      )
+                                    : const Text('Sign up'),
+                              ),
+                            ),
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Don\'t have an account?'),
+                                const Text('Already have an account?'),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pushReplacementNamed(
                                       context,
-                                      Routes.signup,
+                                      Routes.login,
                                     );
                                   },
-                                  child: const Text('Sign up'),
+                                  child: const Text('Log in'),
                                 ),
                               ],
                             ),
@@ -179,5 +167,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
