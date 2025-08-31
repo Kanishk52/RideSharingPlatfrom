@@ -46,4 +46,4 @@ app.*.map.json
 /android/.gradle
 /android/captures/
 
-# firebase_*
+firebase_*

@@ -4,13 +4,11 @@ import '../models/auth_model.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
-  final AuthRepository? _authRepository; // Make nullable
 
   AuthService({
     FirebaseAuth? firebaseAuth,
     AuthRepository? authRepository, // Make nullable
-  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-       _authRepository = authRepository;
+  }) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   Future<UserCredential> signUpWithEmailAndPassword(AuthModel authModel) async {
     return await _firebaseAuth.createUserWithEmailAndPassword(
