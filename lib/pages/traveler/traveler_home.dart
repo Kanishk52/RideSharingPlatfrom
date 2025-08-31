@@ -1,43 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../constants/routes.dart';
+import '../../data/models/ride_model.dart';
+import '../../main.dart';
 
-class TravelerHome extends StatefulWidget {
+class TravelerHome extends StatelessWidget {
   const TravelerHome({super.key});
 
   @override
-  State<TravelerHome> createState() => _TravelerHomeState();
-}
-
-class _TravelerHomeState extends State<TravelerHome> {
-  final List<Map<String, dynamic>> _dummyRides = [
-    {
-      'id': '1',
-      'driver': 'John Doe',
-      'from': 'Airport',
-      'to': 'City Center',
-      'status': 'Active',
-      'cabNumber': 'KA-01-XX-1234',
-    },
-    {
-      'id': '2',
-      'driver': 'Jane Smith',
-      'from': 'Mall',
-      'to': 'Downtown',
-      'status': 'Completed',
-      'cabNumber': 'KA-01-YY-5678',
-    },
-  ];
-
-  void _navigateToRideDetails(Map<String, dynamic> ride) {
-    if (ride['status'] == 'Active') {
-      Navigator.pushNamed(context, Routes.activeRide, arguments: ride);
-    } else {
-      Navigator.pushNamed(context, Routes.shareAudit, arguments: ride);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final getRidesForUserUseCase = context
+        .findAncestorWidgetOfExactType<MyApp>()
+        ?.getRidesForUserUseCase;
+
+    // Get current user ID
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    print('Current user ID: $userId'); // Debug log
+
+    if (getRidesForUserUseCase == null) {
+      return const Scaffold(
+        body: Center(child: Text('Error: Ride service not initialized')),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Rides'),
@@ -77,28 +62,62 @@ class _TravelerHomeState extends State<TravelerHome> {
                         ],
                       ),
                       const SizedBox(height: 16),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _dummyRides.length,
-                        separatorBuilder: (context, index) => const Divider(),
-                        itemBuilder: (context, index) {
-                          final ride = _dummyRides[index];
-                          return InkWell(
-                            onTap: () => _navigateToRideDetails(ride),
-                            child: ListTile(
-                              title: Text(ride['driver'] ?? ''),
-                              subtitle: Text('${ride['from']} → ${ride['to']}'),
-                              trailing: Chip(
-                                label: Text(
-                                  ride['status'] ?? '',
-                                  style: const TextStyle(color: Colors.white),
+                      StreamBuilder<List<RideModel>>(
+                        stream: getRidesForUserUseCase?.call(userId),
+                        builder: (context, snapshot) {
+                          print(
+                            'Stream state: ${snapshot.connectionState}',
+                          ); // Debug log
+                          if (snapshot.hasError) {
+                            print(
+                              'Stream error: ${snapshot.error}',
+                            ); // Debug log
+                            return Center(
+                              child: Text('Error: ${snapshot.error}'),
+                            );
+                          }
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+
+                          final rides = snapshot.data ?? [];
+                          if (rides.isEmpty) {
+                            return const Center(
+                              child: Text('No recent rides.'),
+                            );
+                          }
+
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: rides.length,
+                            separatorBuilder: (_, __) => const Divider(),
+                            itemBuilder: (context, index) {
+                              final ride = rides[index];
+                              return InkWell(
+                                onTap: () =>
+                                    _navigateToRideDetails(ride, context),
+                                child: ListTile(
+                                  title: Text(ride.driver),
+                                  subtitle: Text('${ride.from} → ${ride.to}'),
+                                  trailing: Chip(
+                                    label: Text(
+                                      ride.status,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    backgroundColor: ride.status == 'Active'
+                                        ? Theme.of(context).colorScheme.primary
+                                        : Colors.grey,
+                                  ),
                                 ),
-                                backgroundColor: ride['status'] == 'Active'
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Colors.grey,
-                              ),
-                            ),
+                              );
+                            },
                           );
                         },
                       ),
@@ -116,5 +135,13 @@ class _TravelerHomeState extends State<TravelerHome> {
         icon: const Icon(Icons.add),
       ),
     );
+  }
+
+  void _navigateToRideDetails(RideModel ride, BuildContext context) {
+    if (ride.status == 'Active') {
+      Navigator.pushNamed(context, Routes.activeRide, arguments: ride);
+    } else {
+      Navigator.pushNamed(context, Routes.shareAudit, arguments: ride);
+    }
   }
 }

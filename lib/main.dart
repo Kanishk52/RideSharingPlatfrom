@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ride_tracking_platform/data/services/ride_service.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'config/theme.dart';
@@ -19,6 +20,9 @@ import 'pages/admin/ride_detail_page.dart';
 import 'data/repositories/firebase_auth_repository.dart';
 import 'data/services/auth_service.dart';
 import 'domain/usecases/auth_usecases.dart';
+import 'data/repositories/firebase_ride_repository.dart';
+import 'domain/repositories/ride_repository.dart';
+import 'domain/usecases/ride_usecases.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +48,13 @@ void main() async {
   final signOutUseCase = SignOutUseCase(authRepository);
   final getAuthStateUseCase = GetAuthStateUseCase(authRepository);
 
+  final rideService = RideService();
+  final rideRepository = FirebaseRideRepository(rideService);
+  final createRideUseCase = CreateRideUseCase(rideRepository);
+  final getRidesForUserUseCase = GetRidesForUserUseCase(rideRepository);
+  final getActiveRideUseCase = GetActiveRideUseCase(rideRepository);
+  final updateRideStatusUseCase = UpdateRideStatusUseCase(rideRepository);
+
   runApp(
     MyApp(
       authService: finalAuthService,
@@ -51,6 +62,11 @@ void main() async {
       signInUseCase: signInUseCase,
       signOutUseCase: signOutUseCase,
       getAuthStateUseCase: getAuthStateUseCase,
+      createRideUseCase: createRideUseCase,
+      getRidesForUserUseCase: getRidesForUserUseCase,
+      getActiveRideUseCase: getActiveRideUseCase,
+      updateRideStatusUseCase: updateRideStatusUseCase,
+      rideRepository: rideRepository,
     ),
   );
 }
@@ -61,6 +77,11 @@ class MyApp extends StatelessWidget {
   final SignInUseCase signInUseCase;
   final SignOutUseCase signOutUseCase;
   final GetAuthStateUseCase getAuthStateUseCase;
+  final CreateRideUseCase createRideUseCase;
+  final GetRidesForUserUseCase getRidesForUserUseCase;
+  final GetActiveRideUseCase getActiveRideUseCase;
+  final UpdateRideStatusUseCase updateRideStatusUseCase;
+  final RideRepository rideRepository;
 
   const MyApp({
     super.key,
@@ -69,6 +90,11 @@ class MyApp extends StatelessWidget {
     required this.signInUseCase,
     required this.signOutUseCase,
     required this.getAuthStateUseCase,
+    required this.createRideUseCase,
+    required this.getRidesForUserUseCase,
+    required this.getActiveRideUseCase,
+    required this.updateRideStatusUseCase,
+    required this.rideRepository,
   });
 
   @override
@@ -77,7 +103,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ride Tracking Platform',
       theme: AppTheme.lightTheme,
-      initialRoute: Routes.signup,
+      initialRoute: Routes.travelerHome,
       routes: {
         Routes.login: (context) => LoginPage(),
         Routes.signup: (context) => SignupPage(),
