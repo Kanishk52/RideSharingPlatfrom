@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ride_tracking_platform/main.dart';
-import '../../services/auth_service.dart';
 import '../../constants/routes.dart';
-import '../../domain/usecases/auth_usecases.dart';
+import '../../data/models/auth_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -120,8 +119,11 @@ class _LoginPageState extends State<LoginPage> {
                                           setState(() => _isLoading = true);
                                           try {
                                             await signInUseCase?.call(
-                                              _emailController.text,
-                                              _passwordController.text,
+                                              AuthModel(
+                                                email: _emailController.text,
+                                                password:
+                                                    _passwordController.text,
+                                              ),
                                             );
                                             if (mounted) {
                                               Navigator.pushReplacementNamed(

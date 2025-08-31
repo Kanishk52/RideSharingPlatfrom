@@ -1,12 +1,13 @@
 import '../repositories/auth_repository.dart';
+import '../../data/models/auth_model.dart';
 
 class SignUpUseCase {
   final AuthRepository _authRepository;
 
   SignUpUseCase(this._authRepository);
 
-  Future<void> call(String email, String password) async {
-    await _authRepository.signUp(email, password);
+  Future<void> call(AuthModel authModel) async {
+    await _authRepository.signUp(authModel);
   }
 }
 
@@ -15,8 +16,8 @@ class SignInUseCase {
 
   SignInUseCase(this._authRepository);
 
-  Future<void> call(String email, String password) async {
-    await _authRepository.signIn(email, password);
+  Future<void> call(AuthModel authModel) async {
+    await _authRepository.signIn(authModel);
   }
 }
 

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../constants/routes.dart';
 
 class ActiveRidePage extends StatelessWidget {
   const ActiveRidePage({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../domain/usecases/auth_usecases.dart';
 import '../../constants/routes.dart';
 import '../../main.dart';
+import '../../data/models/auth_model.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -105,8 +105,10 @@ class _SignupPageState extends State<SignupPage> {
                                     setState(() => _isLoading = true);
                                     try {
                                       await signUpUseCase?.call(
-                                        _emailController.text,
-                                        _passwordController.text,
+                                        AuthModel(
+                                          email: _emailController.text,
+                                          password: _passwordController.text,
+                                        ),
                                       );
                                       if (mounted) {
                                         Navigator.pushReplacementNamed(

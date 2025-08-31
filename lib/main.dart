@@ -17,7 +17,7 @@ import 'pages/companion/feedback_page.dart';
 import 'pages/admin/admin_dashboard.dart';
 import 'pages/admin/ride_detail_page.dart';
 import 'data/repositories/firebase_auth_repository.dart';
-import 'services/auth_service.dart';
+import 'data/services/auth_service.dart';
 import 'domain/usecases/auth_usecases.dart';
 
 void main() async {
