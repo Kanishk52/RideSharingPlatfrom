@@ -23,6 +23,7 @@ import 'domain/usecases/auth_usecases.dart';
 import 'data/repositories/firebase_ride_repository.dart';
 import 'domain/repositories/ride_repository.dart';
 import 'domain/usecases/ride_usecases.dart';
+import 'pages/main_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,19 +104,21 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ride Tracking Platform',
       theme: AppTheme.lightTheme,
-      initialRoute: Routes.travelerHome,
+      initialRoute: Routes.roleSelection,
       routes: {
         Routes.login: (context) => LoginPage(),
         Routes.signup: (context) => SignupPage(),
         Routes.roleSelection: (context) => const RoleSelectionPage(),
-        Routes.travelerHome: (context) => const TravelerHome(),
+        Routes.travelerHome: (context) => const MainNavigation(initialIndex: 0),
+        Routes.companionHome: (context) =>
+            const MainNavigation(initialIndex: 1),
+        Routes.adminDashboard: (context) =>
+            const MainNavigation(initialIndex: 2),
         Routes.createRide: (context) => const CreateRidePage(),
         Routes.activeRide: (context) => const ActiveRidePage(),
         Routes.shareAudit: (context) => const ShareAuditPage(),
-        Routes.companionHome: (context) => const CompanionHome(),
         Routes.trackRide: (context) => const TrackRidePage(),
         Routes.feedback: (context) => const FeedbackPage(),
-        Routes.adminDashboard: (context) => const AdminDashboard(),
         Routes.rideDetail: (context) => const RideDetailPage(),
       },
     );

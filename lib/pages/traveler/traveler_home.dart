@@ -63,7 +63,7 @@ class TravelerHome extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       StreamBuilder<List<RideModel>>(
-                        stream: getRidesForUserUseCase?.call(userId),
+                        stream: getRidesForUserUseCase.call(userId),
                         builder: (context, snapshot) {
                           print(
                             'Stream state: ${snapshot.connectionState}',
