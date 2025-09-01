@@ -38,3 +38,12 @@ class UpdateRideStatusUseCase {
     return _rideRepository.updateRideStatus(rideId, status);
   }
 }
+
+class GetAllRidesUseCase {
+  final RideRepository _rideRepository;
+  GetAllRidesUseCase(this._rideRepository);
+
+  Stream<List<RideModel>> call() {
+    return _rideRepository.getAllRides();
+  }
+}

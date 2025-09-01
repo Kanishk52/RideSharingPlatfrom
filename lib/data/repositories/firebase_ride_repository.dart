@@ -69,6 +69,28 @@ class FirebaseRideRepository implements RideRepository {
     }
   }
 
+  @override
+  Stream<List<RideModel>> getAllRides() {
+    return _firestore
+        .collection('rides')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => RideModel.fromMap({...doc.data(), 'id': doc.id}))
+              .toList(),
+        );
+  }
+
+  @override
+  Future<int> getActiveRidesCount() async {
+    final snapshot = await _firestore
+        .collection('rides')
+        .where('status', isEqualTo: 'Active')
+        .get();
+    return snapshot.size;
+  }
+
   bool _isValidRide(RideModel ride) {
     // Add your business rule validations here
     return true;

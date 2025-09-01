@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import '../../data/models/ride_model.dart';
 import '../../main.dart';
 
@@ -11,6 +12,62 @@ class ActiveRidePage extends StatefulWidget {
 }
 
 class _ActiveRidePageState extends State<ActiveRidePage> {
+  void _shareRideCode(BuildContext context, String rideId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Share Ride'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Share this code with your companion:'),
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      rideId,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: IconButton(
+                      icon: const Icon(Icons.copy),
+                      onPressed: () {
+                        Clipboard.setData(ClipboardData(text: rideId));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Ride code copied!')),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final getActiveRideUseCase = context
@@ -99,6 +156,11 @@ class _ActiveRidePageState extends State<ActiveRidePage> {
                     ],
                   ),
                 ),
+              ),
+              FloatingActionButton.extended(
+                onPressed: () => _shareRideCode(context, ride.id),
+                icon: const Icon(Icons.share),
+                label: const Text('Share Ride'),
               ),
             ],
           );

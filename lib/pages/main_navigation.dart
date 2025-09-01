@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/traveler/traveler_home.dart';
 import '../pages/companion/companion_home.dart';
-import '../pages/admin/admin_dashboard.dart';
+import '../pages/admin/admin_login_page.dart'; // Import AdminLoginPage
 
 class MainNavigation extends StatefulWidget {
   final int initialIndex;
@@ -18,7 +18,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _pages = [
     const TravelerHome(),
     const CompanionHome(),
-    const AdminDashboard(),
+    const AdminLoginPage(), // Replace AdminDashboard with AdminLoginPage
   ];
 
   @override

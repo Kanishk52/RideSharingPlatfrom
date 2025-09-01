@@ -17,6 +17,7 @@ import 'pages/companion/track_ride_page.dart';
 import 'pages/companion/feedback_page.dart';
 import 'pages/admin/admin_dashboard.dart';
 import 'pages/admin/ride_detail_page.dart';
+import 'pages/admin/admin_login_page.dart';
 import 'data/repositories/firebase_auth_repository.dart';
 import 'data/services/auth_service.dart';
 import 'domain/usecases/auth_usecases.dart';
@@ -55,6 +56,7 @@ void main() async {
   final getRidesForUserUseCase = GetRidesForUserUseCase(rideRepository);
   final getActiveRideUseCase = GetActiveRideUseCase(rideRepository);
   final updateRideStatusUseCase = UpdateRideStatusUseCase(rideRepository);
+  final getAllRidesUseCase = GetAllRidesUseCase(rideRepository);
 
   runApp(
     MyApp(
@@ -68,6 +70,7 @@ void main() async {
       getActiveRideUseCase: getActiveRideUseCase,
       updateRideStatusUseCase: updateRideStatusUseCase,
       rideRepository: rideRepository,
+      getAllRidesUseCase: getAllRidesUseCase,
     ),
   );
 }
@@ -83,6 +86,7 @@ class MyApp extends StatelessWidget {
   final GetActiveRideUseCase getActiveRideUseCase;
   final UpdateRideStatusUseCase updateRideStatusUseCase;
   final RideRepository rideRepository;
+  final GetAllRidesUseCase getAllRidesUseCase;
 
   const MyApp({
     super.key,
@@ -96,6 +100,7 @@ class MyApp extends StatelessWidget {
     required this.getActiveRideUseCase,
     required this.updateRideStatusUseCase,
     required this.rideRepository,
+    required this.getAllRidesUseCase,
   });
 
   @override
@@ -120,6 +125,7 @@ class MyApp extends StatelessWidget {
         Routes.trackRide: (context) => const TrackRidePage(),
         Routes.feedback: (context) => const FeedbackPage(),
         Routes.rideDetail: (context) => const RideDetailPage(),
+        Routes.adminLogin: (context) => const AdminLoginPage(),
       },
     );
   }

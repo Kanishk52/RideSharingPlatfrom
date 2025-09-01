@@ -5,4 +5,6 @@ abstract class RideRepository {
   Stream<List<RideModel>> getRidesForUser(String userId);
   Future<RideModel?> getActiveRide(String userId);
   Future<void> updateRideStatus(String rideId, String status);
+  Stream<List<RideModel>> getAllRides();
+  Future<int> getActiveRidesCount();
 }

@@ -21,20 +21,15 @@ class _FeedbackPageState extends State<FeedbackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Provide Feedback'),
-      ),
+      appBar: AppBar(title: const Text('Provide Feedback')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'How was the ride experience?',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              'How was the traacking experience?',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             Row(
@@ -57,17 +52,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
             const SizedBox(height: 32),
             const Text(
               'Additional Comments',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _commentController,
               maxLines: 4,
               decoration: const InputDecoration(
-                hintText: 'Share your thoughts about the ride...',
+                hintText: 'Additional info about tracking...',
                 border: OutlineInputBorder(),
               ),
             ),

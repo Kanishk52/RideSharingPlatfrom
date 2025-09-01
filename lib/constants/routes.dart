@@ -17,4 +17,5 @@ class Routes {
   // Admin routes
   static const String adminDashboard = '/admin/dashboard';
   static const String rideDetail = '/admin/ride-detail';
+  static const String adminLogin = '/admin/login';
 }
