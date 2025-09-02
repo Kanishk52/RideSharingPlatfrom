@@ -15,7 +15,7 @@ class TravelerHome extends StatelessWidget {
 
     // Get current user ID
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    print('Current user ID: $userId'); // Debug log
+    // print('Current user ID: $userId'); // Debug log
 
     if (getRidesForUserUseCase == null) {
       return const Scaffold(
@@ -65,13 +65,13 @@ class TravelerHome extends StatelessWidget {
                       StreamBuilder<List<RideModel>>(
                         stream: getRidesForUserUseCase.call(userId),
                         builder: (context, snapshot) {
-                          print(
-                            'Stream state: ${snapshot.connectionState}',
-                          ); // Debug log
+                          // print(
+                          //   'Stream state: ${snapshot.connectionState}',
+                          // ); // Debug log
                           if (snapshot.hasError) {
-                            print(
-                              'Stream error: ${snapshot.error}',
-                            ); // Debug log
+                            // print(
+                            //   'Stream error: ${snapshot.error}',
+                            // ); // Debug log
                             return Center(
                               child: Text('Error: ${snapshot.error}'),
                             );
@@ -102,7 +102,7 @@ class TravelerHome extends StatelessWidget {
                                 onTap: () =>
                                     _navigateToRideDetails(ride, context),
                                 child: ListTile(
-                                  title: Text(ride.driver),
+                                  title: Text(ride.driverName),
                                   subtitle: Text('${ride.from} → ${ride.to}'),
                                   trailing: Chip(
                                     label: Text(

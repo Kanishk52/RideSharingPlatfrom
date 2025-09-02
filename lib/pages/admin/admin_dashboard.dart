@@ -87,7 +87,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         margin: const EdgeInsets.only(bottom: 16),
                         child: ExpansionTile(
                           title: Text('${ride.from} → ${ride.to}'),
-                          subtitle: Text('Driver: ${ride.driver}'),
+                          subtitle: Text('Driver: ${ride.driverName}'),
                           trailing: Chip(
                             label: Text(ride.status),
                             backgroundColor: ride.status == 'Active'

@@ -66,7 +66,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                // TODO: Save feedback to Firestore
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(

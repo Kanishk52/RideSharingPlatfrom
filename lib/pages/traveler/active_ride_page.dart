@@ -81,7 +81,7 @@ class _ActiveRidePageState extends State<ActiveRidePage> {
     }
 
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    print('Fetching active ride for user: $userId'); // Debug log
+    // Debug log
 
     return Scaffold(
       appBar: AppBar(title: const Text('Active Ride')),
@@ -89,7 +89,7 @@ class _ActiveRidePageState extends State<ActiveRidePage> {
         future: getActiveRideUseCase(userId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print('Error loading active ride: ${snapshot.error}'); // Debug log
+            // Debug log
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
@@ -98,7 +98,7 @@ class _ActiveRidePageState extends State<ActiveRidePage> {
           }
 
           final ride = snapshot.data;
-          print('Active ride data: $ride'); // Debug log
+          // print('Active ride data: $ride'); // Debug log
 
           if (ride == null) {
             return const Center(child: Text('No active ride found'));
@@ -120,14 +120,14 @@ class _ActiveRidePageState extends State<ActiveRidePage> {
                       Card(
                         child: ListTile(
                           leading: const Icon(Icons.person),
-                          title: Text(ride.driver),
+                          title: Text(
+                            ride.driverName,
+                          ), // Changed from ride.driver
                           subtitle: Text(ride.cabNumber),
-                          trailing: Chip(
-                            label: const Text('Active'),
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            labelStyle: const TextStyle(color: Colors.white),
+                          trailing: const Chip(
+                            label: Text('Active'),
+                            backgroundColor: Colors.green,
+                            labelStyle: TextStyle(color: Colors.white),
                           ),
                         ),
                       ),

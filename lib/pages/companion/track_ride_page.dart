@@ -70,12 +70,17 @@ class TrackRidePage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              'Driver: ${ride.driverName}',
+                            ), // Changed from ride.driver
                             Card(
                               child: ListTile(
                                 leading: const CircleAvatar(
                                   child: Icon(Icons.person),
                                 ),
-                                title: Text(ride.driver),
+                                title: Text(
+                                  ride.driverName,
+                                ), // Only show driver name
                                 subtitle: Text('Cab: ${ride.cabNumber}'),
                                 trailing: Chip(
                                   label: Text(ride.status),

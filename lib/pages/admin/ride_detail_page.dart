@@ -5,7 +5,6 @@ class RideDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Fetch ride details from Firestore using ID from arguments
     return Scaffold(
       appBar: AppBar(title: const Text('Ride Details')),
       body: SingleChildScrollView(

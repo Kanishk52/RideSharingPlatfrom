@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ride_tracking_platform/pages/admin/admin_dashboard.dart';
-import '../../constants/routes.dart';
 import '../../data/models/admin_credentials.dart';
 
 class AdminLoginPage extends StatefulWidget {
@@ -21,17 +20,17 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      print('Login attempt: ${_usernameController.text}'); // Debug log
+      // Debug log
 
       if (_usernameController.text == AdminCredentials.username &&
           _passwordController.text == AdminCredentials.password) {
-        print('Credentials valid, navigating to dashboard'); // Debug log
+        // Debug log
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const AdminDashboard()),
         );
       } else {
-        print('Invalid credentials'); // Debug log
+        // Debug log
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text('Invalid credentials')));

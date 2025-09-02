@@ -24,7 +24,7 @@ class _ShareAuditPageState extends State<ShareAuditPage> {
     }
 
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    print('Fetching ride history for user: $userId'); // Debug log
+    // print('Fetching ride history for user: $userId'); // Debug log
 
     return Scaffold(
       appBar: AppBar(title: const Text('Ride History')),
@@ -32,7 +32,7 @@ class _ShareAuditPageState extends State<ShareAuditPage> {
         stream: getRidesForUserUseCase(userId),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print('Error loading ride history: ${snapshot.error}'); // Debug log
+            // print('Error loading ride history: ${snapshot.error}'); // Debug log
             return Center(child: Text('Error: ${snapshot.error}'));
           }
 
@@ -41,7 +41,7 @@ class _ShareAuditPageState extends State<ShareAuditPage> {
           }
 
           final rides = snapshot.data ?? [];
-          print('Received ${rides.length} rides'); // Debug log
+          // print('Received ${rides.length} rides'); // Debug log
 
           if (rides.isEmpty) {
             return const Center(child: Text('No ride history available'));
@@ -65,7 +65,9 @@ class _ShareAuditPageState extends State<ShareAuditPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Driver: ${ride.driver}'),
+                          Text(
+                            'Driver: ${ride.driverName}',
+                          ), // Changed from ride.driver
                           const SizedBox(height: 8),
                           Text('Cab Number: ${ride.cabNumber}'),
                           const SizedBox(height: 8),
@@ -73,11 +75,11 @@ class _ShareAuditPageState extends State<ShareAuditPage> {
                           const SizedBox(height: 8),
                           const Row(
                             children: [
-                              Icon(Icons.star, color: Colors.amber),
-                              Icon(Icons.star, color: Colors.amber),
-                              Icon(Icons.star, color: Colors.amber),
-                              Icon(Icons.star, color: Colors.amber),
-                              Icon(Icons.star_half, color: Colors.amber),
+                              Icon(Icons.star_border, color: Colors.black),
+                              Icon(Icons.star_border, color: Colors.black),
+                              Icon(Icons.star_border, color: Colors.black),
+                              Icon(Icons.star_border, color: Colors.black),
+                              Icon(Icons.star_border, color: Colors.black),
                             ],
                           ),
                         ],

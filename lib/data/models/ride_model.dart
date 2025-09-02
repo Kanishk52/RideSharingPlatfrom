@@ -2,7 +2,8 @@ class RideModel {
   final String id;
   final String from;
   final String to;
-  final String driver;
+  final String driver; // This will store userId
+  final String driverName; // This will store driver's name
   final String companion;
   final String cabNumber;
   final String status;
@@ -13,6 +14,7 @@ class RideModel {
     required this.from,
     required this.to,
     required this.driver,
+    required this.driverName,
     required this.companion,
     required this.cabNumber,
     required this.status,
@@ -25,6 +27,7 @@ class RideModel {
       'from': from,
       'to': to,
       'driver': driver,
+      'driverName': driverName,
       'companion': companion,
       'cabNumber': cabNumber,
       'status': status,
@@ -38,6 +41,7 @@ class RideModel {
       from: map['from'] ?? '',
       to: map['to'] ?? '',
       driver: map['driver'] ?? '',
+      driverName: map['driverName'] ?? '',
       companion: map['companion'] ?? '',
       cabNumber: map['cabNumber'] ?? '',
       status: map['status'] ?? '',

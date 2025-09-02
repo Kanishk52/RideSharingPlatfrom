@@ -65,7 +65,8 @@ class _CreateRidePageState extends State<CreateRidePage> {
           id: const Uuid().v4(),
           from: _fromController.text,
           to: _toController.text,
-          driver: userId, // Use actual user ID instead of text input
+          driver: userId, // Store user ID
+          driverName: _driverController.text, // Store driver name
           companion: _companionController.text,
           cabNumber: _cabNumberController.text,
           status: 'Active',
@@ -73,13 +74,13 @@ class _CreateRidePageState extends State<CreateRidePage> {
         );
 
         await _createRideUseCase(ride);
-        print('Ride created successfully'); // Debug log
+        // print('Ride created successfully'); // Debug log
 
         if (mounted) {
           Navigator.pushReplacementNamed(context, Routes.activeRide);
         }
       } catch (e) {
-        print('Error creating ride: $e'); // Debug log
+        // print('Error creating ride: $e'); // Debug log
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(e.toString())));
