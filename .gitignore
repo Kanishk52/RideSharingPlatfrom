@@ -46,4 +46,4 @@ app.*.map.json
 /android/.gradle
 /android/captures/
 
-/lib/firebase_*
+lib/firebase_options.dart
